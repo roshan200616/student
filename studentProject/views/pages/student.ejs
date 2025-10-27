@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head') %>
+  <style>
+    .student-table{
+      padding : 0px 80px 0px 80px ;
+    }
+    .add{
+      display: flex;
+      justify-content: end;
+      padding: 0px 36px 0px 36px;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('../partials/header') %>
+  <div class="add">
+    <a class="btn btn-primary " href="/student/add" role="button">Add</a>
+    </div>
+    <div class="student-table">
+      <table class="table table-striped ">
+        <thead>
+          <tr scope="row">
+            <th scope="col">Student Id</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Name </th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Data of Birth</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Department</th>
+            <th scope="col">Addmission Date</th>
+            <th scope="col">City</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.forEach( Student=>{%>
+            <tr>
+              <td>
+                <%=Student.student_id%>
+              </td>
+              <td>
+                <%=Student.first_name%>
+              </td>
+              <td>
+                <%=Student.last_name%>
+              </td>
+              <td>
+                <%=Student.first_name+ " " + Student.last_name%>
+              </td>
+              <td>
+                <%=Student.email%>
+              </td>
+              <td>
+                <%=Student.phone_number%>
+              </td>
+              <td>
+                <%= new Date(Student.date_of_birth).toLocaleDateString()%>
+              </td>
+              <td>
+                <%=Student.gender%>
+              </td>
+              <td>
+                <%=Student.department%>
+              </td>
+              <td>
+                <%= new Date(Student.admission_date).toLocaleDateString() %>
+              </td>
+              <td>
+                <%=Student.city%>
+              </td>
+            </tr>
+            <%})%>
+        </tbody>
+      </table>
+    </div>
+</body>
+
+</html>
