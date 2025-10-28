@@ -17,7 +17,7 @@ try{
     email VARCHAR(100) UNIQUE,
     phone_number VARCHAR(15),
     date_of_birth DATE,
-    gender ENUM('Male', 'Female', 'Other'),
+    gender VARCHAR(10),
    department VARCHAR(50),
     admission_date DATE,
     city VARCHAR(50)             
@@ -29,13 +29,13 @@ catch (err){
    console.log(err.message)
 }
 
-export const queryExec = async (queryStr,queryOption) =>{
+export const queryExec = async (queryStr,queryOption=[]) =>{
     try{
         const [result]= await db.execute(queryStr,queryOption)
         return result
     }
     catch(err){
-        console.log('query error')
+        console.log('query error', err)
         throw err
     }
 }

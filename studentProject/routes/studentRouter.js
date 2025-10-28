@@ -1,11 +1,12 @@
 import e from "express";
 const router = e.Router()
 import { queryExec } from "../serverConnection.js";
-router.get('/student', async (req, res) => {
+router.get('/students', async (req, res) => {
     try {
         const data = await queryExec(`select * from students`)
         if (data.length === 0) {
-            res.status(404).send("not found ")
+            res.status(404).send("NO found, mo data ")
+            res.render('pages/index.ejs')
         }
 
         else {
@@ -23,7 +24,6 @@ router.get('/student/add',async (req,res)=>{
 })
 router.get('/student/:student_id', async (req, res) => {
     try {
-        console.log(typeof(req.params.student_id) === Number)
         const id = req.params.student_id
         const data = await queryExec(`select * from students where student_id = ?`, [id])
         console.log()
@@ -40,20 +40,21 @@ router.get('/student/:student_id', async (req, res) => {
     }
 
 })
-router.post('/', async (req, res) => {
+router.post('/student', async (req, res) => {
     try {
         const data = req.body;
-        const values = [
-            data.first_name,
-            data.last_name,
-            data.email,
-            data.phone_number,
-            data.date_of_birth,
-            data.gender,
-            data.department,
-            data.admission_date,
-            data.city
-        ];
+const values = [
+  data.first_name ?? null,
+  data.last_name ?? null,
+  data.email ?? null,
+  data.phone_number ?? null,
+  data.date_of_birth ?? null,
+  data.gender ?? null,
+  data.department ?? null,
+  data.admission_date ?? null,
+  data.city ?? null
+];
+
         const result = await queryExec(`INSERT INTO students 
 (first_name, last_name, email, phone_number, date_of_birth, gender, department, admission_date, city)
 VALUES
@@ -66,8 +67,8 @@ VALUES
         }
     }
     catch (err) {
-        res.status(500).send('server error')
-        console.log(err)
+        res.status(500).send('server error',err)
+        
     }
 })
 router.put('/:student_id', async (req, res) => {
@@ -84,6 +85,7 @@ router.put('/:student_id', async (req, res) => {
         }
         else {
             res.status(200).send("updated successful")
+            
         }
     }
     catch (err) {

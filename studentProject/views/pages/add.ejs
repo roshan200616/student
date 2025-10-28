@@ -1,113 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Registration Form</title>
   <!-- ✅ Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  >
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .regForm{
+      padding: 0px 80px 0px 80px;
+      max-height:600px ;
+    }
+  </style>
 </head>
+
 <body class="container my-5 ">
+  <%- include('../partials/header')%>
+    <h2 class="text-center mb-4">Student Registration Form</h2>
 
-  <h2 class="text-center mb-4">Student Registration Form</h2>
+    <form class="row g-3 border p-4 rounded shadow regForm">
 
-  <form class="row g-3 border p-4 rounded shadow">
+      <!-- First Name -->
+      <div class="col-md-6">
+        <label for="firstName" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="firstName" placeholder="Enter first name" required>
+      </div>
 
-    <!-- First Name -->
-    <div class="col-md-6">
-      <label for="firstName" class="form-label">First Name</label>
-      <input type="text" class="form-control" id="firstName" placeholder="Enter first name" required>
-    </div>
+      <!-- Last Name -->
+      <div class="col-md-6">
+        <label for="lastName" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="lastName" placeholder="Enter last name" required>
+      </div>
 
-    <!-- Last Name -->
-    <div class="col-md-6">
-      <label for="lastName" class="form-label">Last Name</label>
-      <input type="text" class="form-control" id="lastName" placeholder="Enter last name" required>
-    </div>
+      <!-- Email -->
+      <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="example@gmail.com" required>
+      </div>
 
-    <!-- Email -->
-    <div class="col-md-6">
-      <label for="email" class="form-label">Email</label>
-      <input type="email" class="form-control" id="email" placeholder="example@gmail.com" required>
-    </div>
+      <!-- Phone Number -->
+      <div class="col-md-6">
+        <label for="phone" class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
+      </div>
 
-    <!-- Phone Number -->
-    <div class="col-md-6">
-      <label for="phone" class="form-label">Phone Number</label>
-      <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
-    </div>
+      <!-- Date of Birth -->
+      <div class="col-md-6">
+        <label for="dob" class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" id="dob" placeholder="YYYY-MM-DD" required>
+      </div>
 
-    <!-- Date of Birth -->
-    <div class="col-md-6">
-      <label for="dob" class="form-label">Date of Birth</label>
-      <input type="date" class="form-control" id="dob" required>
-    </div>
+      <!-- Gender -->
+      <div class="col-md-6">
+        <label class="form-label">Gender</label>
+        <select class="form-select" id="gender" required>
+          <option selected disabled>Choose...</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
 
-    <!-- Gender -->
-    <div class="col-md-6">
-      <label class="form-label">Gender</label>
-      <select class="form-select" id="gender" required>
-        <option selected disabled>Choose...</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
+      <!-- Department -->
+      <div class="col-md-6">
+        <label for="department" class="form-label">Department</label>
+        <input type="text" class="form-control" id="department" placeholder="Enter department" required>
+      </div>
 
-    <!-- Department -->
-    <div class="col-md-6">
-      <label for="department" class="form-label">Department</label>
-      <input type="text" class="form-control" id="department" placeholder="Enter department" required>
-    </div>
+      <!-- Admission Date -->
+      <div class="col-md-6">
+        <label for="admissionDate" class="form-label">Admission Date</label>
+        <input type="date" class="form-control" id="admissionDate" required>
+      </div>
 
-    <!-- Admission Date -->
-    <div class="col-md-6">
-      <label for="admissionDate" class="form-label">Admission Date</label>
-      <input type="date" class="form-control" id="admissionDate" required>
-    </div>
+      <!-- City -->
+      <div class="col-md-6">
+        <label for="city" class="form-label">City</label>
+        <input type="text" class="form-control" id="city" placeholder="Enter city" required>
+      </div>
 
-    <!-- City -->
-    <div class="col-md-6">
-      <label for="city" class="form-label">City</label>
-      <input type="text" class="form-control" id="city" placeholder="Enter city" required>
-    </div>
+      <!-- Submit Button -->
+      <div class="col-12 text-center mt-4">
+        <button type="button" class="btn btn-primary px-4" onclick="getdata(event)">Submit</button>
+      </div>
+      <div class="col-12 text-center mt-4">
+      </div>
+    </form>
 
-    <!-- Submit Button -->
-    <div class="col-12 text-center mt-4">
-      <button type="submit" class="btn btn-primary px-4" onclick="getdata(event)">Submit</button>
-    </div>
-  </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let fname = document.getElementById('firstName')
+      let lname = document.getElementById('lastName')
+      let email = document.getElementById('email')
+      let num = document.getElementById('phone')
+      let dobDom =document.getElementById('dob') 
+      let genderDom = document.getElementById('gender')
+      let dept = document.getElementById('department')
+      let dateDom = document.getElementById('admissionDate')
+      let cityDom = document.getElementById('city')
 
-<script>
-    let fname = document.getElementById('firstName')
-    let lname = document.getElementById('lastName')
-    let email = document.getElementById('email')
-    let num =document.getElementById('phone')
-    let dobDom = document.getElementById('dob')
-    let genderDom =document.getElementById('gender')
-    let dept = document.getElementById('department')
-    let dateDom=document.getElementById('admissionDate')
-    let cityDom = document.getElementById('city')
-function getdata(event) {
-  event.preventDefault()
-  var data = {
-    firstname:fname.value,
-    lastname:lname.value ,
-    email: email.value ,
-    phonenumber:num.value ,
-    dateOFbirth:dobDom.value,
-    gender:genderDom.value,
-    department: dept.value,
-    date: dateDom.value,
-    city: cityDom.value
-  };
-  console.log(data);
+      
+      function getdata(event) {
+        event.preventDefault()
+        var data = {
+          first_name: fname.value,
+          last_name: lname.value,
+          email: email.value,
+          phone_number: num.value,
+          date_of_birth: dobDom.value ,
+          gender: genderDom.value,
+          department: dept.value,
+          admission_date: dateDom.value ,
+          city: cityDom.value
+        };
+        console.log(data);
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        if (
+  fname.value === '' ||
+  lname.value === '' ||
+  email.value === '' ||
+  num.value === '' ||
+  dobDom.value === '' ||
+  genderDom.value === '' ||
+  dept.value === '' ||
+  dateDom.value === '' ||
+  cityDom.value === ''
+) {
+  alert('Fill all fields before submitting!');
+  return;
 }
-</script>
+
+        const raw = JSON.stringify(data);
+
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow"
+        };
+        try {
+          fetch("http://localhost:3000/student", requestOptions)
+            .then((response) => {
+              if (response.ok) {
+                window.location.href = "http://localhost:3000/students"
+              }
+            })
+        }
+        catch (error) { console.error(error) }
+        ;
+      }
+    </script>
 </body>
+
 </html>

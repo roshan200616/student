@@ -4,8 +4,12 @@
 <head>
   <%- include('../partials/head') %>
   <style>
-    .student-table{
-      padding : 0px 80px 0px 80px ;
+    .student-table {
+      padding: 0px 80px 0px 80px;
+      max-height: 400px; 
+      overflow-y: auto; 
+      overflow-x: auto;
+      border: 1px solid #ccc;
     }
     .add{
       display: flex;
@@ -15,7 +19,7 @@
   </style>
 </head>
 
-<body>
+<body class="main">
   <%- include('../partials/header') %>
   <div class="add">
     <a class="btn btn-primary " href="/student/add" role="button">Add</a>
