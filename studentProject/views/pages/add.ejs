@@ -8,54 +8,63 @@
   <!-- ✅ Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    .regForm{
+    .regForm {
       padding: 0px 80px 0px 80px;
-      max-height:600px ;
+      max-height: 600px;
+    }
+
+    .but {
+
+      width: 50px;
     }
   </style>
 </head>
 
 <body class="container my-5 ">
   <%- include('../partials/header')%>
-    <h2 class="text-center mb-4">Student Registration Form</h2>
+    <h2 class="text-center mb-4"><%- pageName==='add' ? 'Add' : 'Edit' %> Student</h2>
 
     <form class="row g-3 border p-4 rounded shadow regForm">
-
       <!-- First Name -->
       <div class="col-md-6">
         <label for="firstName" class="form-label">First Name</label>
-        <input type="text" class="form-control" id="firstName" placeholder="Enter first name" required>
+        <input type="text" class="form-control" id="firstName" placeholder="Enter first name"
+          value="<%=data.first_name %>" required>
       </div>
 
       <!-- Last Name -->
       <div class="col-md-6">
         <label for="lastName" class="form-label">Last Name</label>
-        <input type="text" class="form-control" id="lastName" placeholder="Enter last name" required>
+        <input type="text" class="form-control" id="lastName" placeholder="Enter last name" value="<%=data.last_name %>"
+          required>
       </div>
 
       <!-- Email -->
       <div class="col-md-6">
         <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="example@gmail.com" required>
+        <input type="email" class="form-control" id="email" placeholder="example@gmail.com" value="<%=data.email %>"
+          required>
       </div>
 
       <!-- Phone Number -->
       <div class="col-md-6">
         <label for="phone" class="form-label">Phone Number</label>
-        <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
+        <input type="tel" class="form-control" id="phone" placeholder="Enter phone number"
+          value="<%=data.phone_number %>" required>
       </div>
 
       <!-- Date of Birth -->
       <div class="col-md-6">
         <label for="dob" class="form-label">Date of Birth</label>
-        <input type="date" class="form-control" id="dob" placeholder="YYYY-MM-DD" required>
+        <input type="date" class="form-control" id="dob" placeholder="YYYY-MM-DD"
+          value="<%= pageName === 'edit' ? new Date(data.date_of_birth).toISOString().split('T')[0] : ''%>" required>
       </div>
 
       <!-- Gender -->
       <div class="col-md-6">
         <label class="form-label">Gender</label>
         <select class="form-select" id="gender" required>
-          <option selected disabled>Choose...</option>
+          <option value="<%=data.gender %>" disabled>Choose...</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Other">Other</option>
@@ -65,26 +74,32 @@
       <!-- Department -->
       <div class="col-md-6">
         <label for="department" class="form-label">Department</label>
-        <input type="text" class="form-control" id="department" placeholder="Enter department" required>
+        <input type="text" class="form-control" id="department" placeholder="Enter department"
+          value="<%=data.department %>" required>
       </div>
 
       <!-- Admission Date -->
       <div class="col-md-6">
         <label for="admissionDate" class="form-label">Admission Date</label>
-        <input type="date" class="form-control" id="admissionDate" required>
+        <input type="date" class="form-control" id="admissionDate"
+          value="<%= pageName === 'edit' ? new Date(data.admission_date).toISOString().split('T')[0] : '' %>" required>
       </div>
 
       <!-- City -->
       <div class="col-md-6">
         <label for="city" class="form-label">City</label>
-        <input type="text" class="form-control" id="city" placeholder="Enter city" required>
+        <input type="text" class="form-control" id="city" placeholder="Enter city" value="<%= data.city %>" required>
       </div>
 
       <!-- Submit Button -->
-      <div class="col-12 text-center mt-4">
-        <button type="button" class="btn btn-primary px-4" onclick="getdata(event)">Submit</button>
-      </div>
-      <div class="col-12 text-center mt-4">
+      <div class="d-flex flex-row gap-2 justify-content-center  ">
+
+        <div class="col-12 text-center mt-4 w-auto">
+          <button type="button" class="btn btn-primary px-4" onclick="back(event)">Back</button>
+        </div>
+        <div class="col-12 text-center mt-4 w-auto">
+          <button type="button" class="btn btn-primary px-4" onclick="addStudent(event)">Submit</button>
+        </div>
       </div>
     </form>
 
@@ -95,63 +110,109 @@
       let lname = document.getElementById('lastName')
       let email = document.getElementById('email')
       let num = document.getElementById('phone')
-      let dobDom =document.getElementById('dob') 
+      let dobDom = document.getElementById('dob')
       let genderDom = document.getElementById('gender')
       let dept = document.getElementById('department')
       let dateDom = document.getElementById('admissionDate')
       let cityDom = document.getElementById('city')
+      let data = {
+        first_name: fname.value,
+        last_name: lname.value,
+        email: email.value,
+        phone_number: num.value,
+        date_of_birth: dobDom.value,
+        gender: genderDom.value,
+        department: dept.value,
+        admission_date: dateDom.value,
+        city: cityDom.value
+      };
+      function back() {
+        window.location.href = "http://localhost:3000/student"
+      }
 
-      
-      function getdata(event) {
+      function addStudent(event) {
         event.preventDefault()
-        var data = {
-          first_name: fname.value,
-          last_name: lname.value,
-          email: email.value,
-          phone_number: num.value,
-          date_of_birth: dobDom.value ,
-          gender: genderDom.value,
-          department: dept.value,
-          admission_date: dateDom.value ,
-          city: cityDom.value
-        };
-        console.log(data);
+        const page = '<%= pageName %>'
+        let data = {
+        first_name: fname.value,
+        last_name: lname.value,
+        email: email.value,
+        phone_number: num.value,
+        date_of_birth: dobDom.value,
+        gender: genderDom.value,
+        department: dept.value,
+        admission_date: dateDom.value,
+        city: cityDom.value
+      };
+        if (page === 'edit') {
 
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        if (
-  fname.value === '' ||
-  lname.value === '' ||
-  email.value === '' ||
-  num.value === '' ||
-  dobDom.value === '' ||
-  genderDom.value === '' ||
-  dept.value === '' ||
-  dateDom.value === '' ||
-  cityDom.value === ''
-) {
-  alert('Fill all fields before submitting!');
-  return;
-}
+          const id = <%= data.student_id %>
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          console.log(data.first_name)
+          const raw = JSON.stringify(data);
 
-        const raw = JSON.stringify(data);
-
-        const requestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          body: raw,
-          redirect: "follow"
-        };
-        try {
-          fetch("http://localhost:3000/student", requestOptions)
-            .then((response) => {
-              if (response.ok) {
-                window.location.href = "http://localhost:3000/students"
-              }
-            })
+          const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+          };
+          try {
+            fetch(`http://localhost:3000/api/student/${id}`, requestOptions)
+              .then(async (response) => {
+                if (response.ok) {
+                  window.location.href = "http://localhost:3000/student"
+                } else {
+                  const error = await response.text()
+                  alert(error)
+                }
+              })
+          }
+          catch (error) {
+            console.error(error)
+            alter(error)
+          };
         }
-        catch (error) { console.error(error) }
-        ;
+        else {
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          let data = {
+        first_name: fname.value,
+        last_name: lname.value,
+        email: email.value,
+        phone_number: num.value,
+        date_of_birth: dobDom.value,
+        gender: genderDom.value,
+        department: dept.value,
+        admission_date: dateDom.value,
+        city: cityDom.value
+      };
+
+          const raw = JSON.stringify(data);
+
+          const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+          };
+          try {
+            fetch("http://localhost:3000/api/student", requestOptions)
+              .then(async (response) => {
+                if (response) {
+                  window.location.href = "http://localhost:3000/student"
+                } else {
+                  const error = await response.json()
+                  alert(error.message)
+                }
+              })
+          }
+          catch (error) {
+            console.error(error)
+          }
+        }
+
       }
     </script>
 </body>

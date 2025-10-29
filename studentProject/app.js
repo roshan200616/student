@@ -1,17 +1,28 @@
-import e from "express";
+import express from "express";
 import bodyParser from 'body-parser'
-import studentApiRouter from './routes/studentRouter.js'
-import staffApiRouter from './routes/staffRouter.js'
-const app = e()
+//api
+import studentApiRouter from './routes/api/studentRouter.js'
+import staffApiRouter from './routes/api/staffRouter.js'
+
+//ui
+import studentUiRouter from './routes/ui/studentUiRouter.js'
+
+const app = express()
 app.use(bodyParser.json())
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:true}))
+
+//home route
 app.get('/home', async (req,res) => {
     res.render('pages/index.ejs')
 })
 
-app.use('/', studentApiRouter)
+// api routes 
+app.use('/api/student/', studentApiRouter)
 app.use('/',staffApiRouter)
+
+//ui routes
+app.use('/student/', studentUiRouter)
 
 try{
     app.listen(3000)

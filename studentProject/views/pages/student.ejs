@@ -3,26 +3,38 @@
 
 <head>
   <%- include('../partials/head') %>
-  <style>
-    .student-table {
-      padding: 0px 80px 0px 80px;
-      max-height: 400px; 
-      overflow-y: auto; 
-      overflow-x: auto;
-      border: 1px solid #ccc;
-    }
-    .add{
-      display: flex;
-      justify-content: end;
-      padding: 0px 36px 0px 36px;
-    }
-  </style>
+    <style>
+      .student-table {
+        margin: 0px 80px 0px 80px;
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: auto;
+        border: 1px solid #ccc;
+      }
+
+      .add {
+        display: flex;
+        justify-content: end;
+        padding: 0px 36px 0px 36px;
+      }
+
+      .action {
+        display: flex;
+        gap: 2px;
+      }
+
+      .action>button {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+      }
+    </style>
 </head>
 
 <body class="main">
   <%- include('../partials/header') %>
-  <div class="add">
-    <a class="btn btn-primary " href="/student/add" role="button">Add</a>
+    <div class="add">
+      <a class="btn btn-primary " href="/student/add" role="button">Add</a>
     </div>
     <div class="student-table">
       <table class="table table-striped ">
@@ -39,49 +51,94 @@
             <th scope="col">Department</th>
             <th scope="col">Addmission Date</th>
             <th scope="col">City</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          <% data.forEach( Student=>{%>
+          <%if(data.length===0){ %>
             <tr>
-              <td>
-                <%=Student.student_id%>
-              </td>
-              <td>
-                <%=Student.first_name%>
-              </td>
-              <td>
-                <%=Student.last_name%>
-              </td>
-              <td>
-                <%=Student.first_name+ " " + Student.last_name%>
-              </td>
-              <td>
-                <%=Student.email%>
-              </td>
-              <td>
-                <%=Student.phone_number%>
-              </td>
-              <td>
-                <%= new Date(Student.date_of_birth).toLocaleDateString()%>
-              </td>
-              <td>
-                <%=Student.gender%>
-              </td>
-              <td>
-                <%=Student.department%>
-              </td>
-              <td>
-                <%= new Date(Student.admission_date).toLocaleDateString() %>
-              </td>
-              <td>
-                <%=Student.city%>
-              </td>
+              <td colspan="12" class="text-center">No records</td>
             </tr>
-            <%})%>
+            <%}else {%>
+              <% data.forEach( Student=>{%>
+                <tr>
+                  <td>
+                    <%=Student.student_id%>
+                  </td>
+                  <td>
+                    <%=Student.first_name%>
+                  </td>
+                  <td>
+                    <%=Student.last_name%>
+                  </td>
+                  <td>
+                    <%=Student.first_name+ " " + Student.last_name%>
+                  </td>
+                  <td>
+                    <%=Student.email%>
+                  </td>
+                  <td>
+                    <%=Student.phone_number%>
+                  </td>
+                  <td>
+                    <%= new Date(Student.date_of_birth).toLocaleDateString()%>
+                  </td>
+                  <td>
+                    <%=Student.gender%>
+                  </td>
+                  <td>
+                    <%=Student.department%>
+                  </td>
+                  <td>
+                    <%= new Date(Student.admission_date).toLocaleDateString() %>
+                  </td>
+                  <td>
+                    <%=Student.city%>
+                  </td>
+                  <td class="action">
+                    <a href="student/edit/<%= Student.student_id %>" class="text-reset text-decoration-none"
+                      style="text-decoration: none !important;">
+                      ✏️
+                    </a>
+                    <button onclick="deleteStudent(<%=Student.student_id%>)">🗑️</button>
+
+                  </td>
+                </tr>
+                <%})%>
+                  <%}%>
         </tbody>
       </table>
     </div>
+    <script>
+      function deleteStudent(studentId) {
+        const id = studentId
+        console.log(typeof (id))
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        const requestOptions = {
+          method: "DELETE",
+          headers: myHeaders,
+          redirect: "follow"
+        };
+        try {
+          fetch(`http://localhost:3000/api/student/${id}`, requestOptions)
+            .then(async (response) => {
+              if (response.ok) {
+                window.location.reload()
+              }
+              else {
+                const error = await response.json()
+                alert(error.message)
+              }
+            })
+        }
+   
+        catch (error) {
+          console.error(error)
+
+        }
+      }
+    </script>
 </body>
 
 </html>
