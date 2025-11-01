@@ -23,6 +23,25 @@ try{
     city VARCHAR(50)             
     );`
  )
+    await db.query(`CREATE TABLE IF NOT EXISTS department (
+  department_id INT AUTO_INCREMENT PRIMARY KEY,
+  department_name VARCHAR(100)
+);`
+ )
+ await db.query(
+    `CREATE TABLE IF NOT EXISTS staff (
+  staff_id INT AUTO_INCREMENT PRIMARY KEY,
+  staff_name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE,
+  phone_number VARCHAR(15),
+  hire_date DATE,
+  position VARCHAR(100),
+  salary DECIMAL(10,2),
+  department_id INT,
+  FOREIGN KEY (department_id) REFERENCES department(department_id)
+);`
+
+ )
 
 console.log('table created successful')}
 catch (err){

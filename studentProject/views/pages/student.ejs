@@ -51,6 +51,7 @@
             <th scope="col">Department</th>
             <th scope="col">Addmission Date</th>
             <th scope="col">City</th>
+            <th scope="col">Staff</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -101,7 +102,11 @@
                       ✏️
                     </a>
                     <button onclick="deleteStudent(<%=Student.student_id%>)">🗑️</button>
-
+                  </td>
+                  <td c>
+                    <a href="" class="text-reset text-decoration-none" style="text-decoration: none !important; color: black;">
+                      name
+                    </a>
                   </td>
                 </tr>
                 <%})%>
@@ -132,7 +137,7 @@
               }
             })
         }
-   
+
         catch (error) {
           console.error(error)
 
