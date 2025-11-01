@@ -4,18 +4,34 @@ import { queryExec } from "../../serverConnection.js";
 
 router.get('/', async (req, res) => {
     try {
-        const data = await queryExec(`select * from students`)
+        const data = await queryExec(`
+      SELECT 
+        s.student_id,
+        s.first_name,
+        s.last_name,
+        s.email,
+        s.phone_number,
+        s.gender,
+        s.date_of_birth,
+        s.admission_date,
+        s.city,
+        d.department_name,
+        st.staff_name
+      FROM students s
+      JOIN department d ON s.department_id = d.department_id
+      JOIN staff st ON s.department_id = st.department_id
+    `);
+
         if (data.length === 0) {
-            res.status(404).send("NO found, mo data ")
+            res.status(404).send("No data found");
+        } else {
+            res.status(200).send(data);
         }
-        else {
-            res.status(200).send(data)
-        }
+    } catch (err) {
+        res.status(500).send('Server error: ' + err);
     }
-    catch (err) {
-        res.status(500).send('server error : ' + err)
-    }
-})
+});
+
 router.get('/:student_id', async (req, res) => {
     try {
         const id = req.params.student_id
@@ -44,6 +60,7 @@ router.post('/', async (req, res) => {
             data.date_of_birth,
             data.gender,
             data.department,
+            data.department_id,
             data.admission_date,
             data.city
         ];
@@ -56,15 +73,16 @@ router.post('/', async (req, res) => {
             data.date_of_birth === '' ||
             data.gender === '' ||
             data.department === '' ||
+            data.department_id === '' ||
             data.admission_date === '' ||
             data.city === ''
         ) {
-            return res.status(400).json({message:'All fields are fill'})
+            return res.status(400).json({ message: 'All fields are fill' })
         }
         const result = await queryExec(`INSERT INTO students 
-            (first_name, last_name, email, phone_number, date_of_birth, gender, department, admission_date, city)
+            (first_name, last_name, email, phone_number, date_of_birth, gender, department,department_id, admission_date, city)
             VALUES
-            (?,?,?,?,?,?,?,?,?)`, values)
+            (?,?,?,?,?,?,?,?,?,?)`, values)
 
         if (result.affectedRows === 0) {
             res.status(400).send('bad request')
@@ -105,7 +123,7 @@ router.delete('/:id', async (req, res) => {
         const id = req.params.id
         const result = await queryExec('delete from students where student_id = ?', [id])
         if (result.affectedRows === 0) {
-            res.status(404).json({message:'not found'})
+            res.status(404).json({ message: 'not found' })
         }
         else {
             res.status(200).send('delete successfully')

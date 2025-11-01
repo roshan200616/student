@@ -88,13 +88,18 @@
                     <%=Student.gender%>
                   </td>
                   <td>
-                    <%=Student.department%>
+                    <%=Student.department_name%>
                   </td>
                   <td>
                     <%= new Date(Student.admission_date).toLocaleDateString() %>
                   </td>
                   <td>
                     <%=Student.city%>
+                  </td>
+                   <td >
+                    <a href="staff/details" class="text-reset text-decoration-none" style="text-decoration: none !important; color: black;">
+                      <%=Student. staff_name%>
+                    </a>
                   </td>
                   <td class="action">
                     <a href="student/edit/<%= Student.student_id %>" class="text-reset text-decoration-none"
@@ -103,11 +108,7 @@
                     </a>
                     <button onclick="deleteStudent(<%=Student.student_id%>)">🗑️</button>
                   </td>
-                  <td c>
-                    <a href="" class="text-reset text-decoration-none" style="text-decoration: none !important; color: black;">
-                      name
-                    </a>
-                  </td>
+                 
                 </tr>
                 <%})%>
                   <%}%>

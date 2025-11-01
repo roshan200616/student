@@ -19,6 +19,7 @@ try{
     date_of_birth DATE,
     gender VARCHAR(10),
    department VARCHAR(50),
+   department_id INT,
     admission_date DATE,
     city VARCHAR(50)             
     );`

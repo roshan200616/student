@@ -73,14 +73,36 @@
       <!-- Department -->
       <div class="col-md-6">
         <label for="department" class="form-label">Department</label>
-        <input type="text" class="form-control" id="department" placeholder="Enter department"
-          value="<%=data.department %>" required>
+        <select class="form-select" id="department" required>
+          <option value="">Choose...</option>
+          <option value="Computer Science" <%=data.department==="Computer Science" ? 'selected' : '' %>>
+            Computer Science </option>
+          <option value="Information Technology" <%=data.department==="Information Technology" ? 'selected' : '' %>
+            >Information Technology</option>
+          <option value="Electronics and Communication" <%=data.department==="Electronics and Communication"
+            ? 'selected' : '' %>>Electronics and Communication</option>
+          <option value="Mechanical Engineering" <%=data.department==="Mechanical Engineering" ? 'selected' : '' %>
+            >Mechanical Engineering</option>
+          <option value="Civil Engineering" <%=data.department==="Civil Engineering" ? 'selected' : '' %>
+            >Civil Engineering</option>
+          <option value="Electrical Engineering" <%=data.department==="Electrical Engineering" ? 'selected' : '' %>
+            >Electrical Engineering</option>
+          <option value="Biotechnology" <%=data.department==="Biotechnology" ? 'selected' : '' %>
+            >Biotechnology</option>
+          <option value="Artificial Intelligence" <%=data.department==="Artificial Intelligence" ? 'selected' : '' %>
+            >Artificial Intelligence</option>
+          <option value="Data Science" <%=data.department==="Data Science" ? 'selected' : '' %>
+            >Data Science</option>
+          <option value="Business Administration" <%=data.department==="Business Administration" ? 'selected' : '' %>
+            >Business Administration</option>
+
+        </select>
       </div>
 
       <!-- Admission Date -->
       <div class="col-md-6">
         <label for="admissionDate" class="form-label">Admission Date</label>
-        <input type="date" class="form-control" id="admissionDate"
+        <input type="date" class="form-control" id="admissionDate" name="admission_date"
           value="<%= pageName === 'edit' ? new Date(data.admission_date).toISOString().split('T')[0] : '' %>" required>
       </div>
 
@@ -117,23 +139,26 @@
       let dept = document.getElementById('department')
       let dateDom = document.getElementById('admissionDate')
       let cityDom = document.getElementById('city')
-      let data = {
-        first_name: fname.value,
-        last_name: lname.value,
-        email: email.value,
-        phone_number: num.value,
-        date_of_birth: dobDom.value,
-        gender: genderDom.value,
-        department: dept.value,
-        admission_date: dateDom.value,
-        city: cityDom.value
-      };
+
+
       function back() {
         window.location.href = "http://localhost:3000/student"
       }
 
       async function addStudent(event) {
         event.preventDefault()
+        const department_id =
+          dept.value === "Computer Science" ? 1 :
+            dept.value === "Information Technology" ? 2 :
+              dept.value === "Electronics and Communication" ? 3 :
+                dept.value === "Mechanical Engineering" ? 4 :
+                  dept.value === "Civil Engineering" ? 5 :
+                    dept.value === "Electrical Engineering" ? 6 :
+                      dept.value === "Biotechnology" ? 7 :
+                        dept.value === "Artificial Intelligence" ? 8 :
+                          dept.value === "Data Science" ? 9 :
+                            dept.value === "Business Administration" ? 10 :
+                              null;
         let data = {
           first_name: fname.value,
           last_name: lname.value,
@@ -142,6 +167,7 @@
           date_of_birth: dobDom.value,
           gender: genderDom.value,
           department: dept.value,
+          department_id: department_id,
           admission_date: dateDom.value,
           city: cityDom.value
         };

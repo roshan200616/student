@@ -19,7 +19,7 @@ app.get('/home', async (req,res) => {
 
 // api routes 
 app.use('/api/student/', studentApiRouter)
-app.use('/',staffApiRouter)
+app.use('/staff',staffApiRouter)
 
 //ui routes
 app.use('/student/', studentUiRouter)
