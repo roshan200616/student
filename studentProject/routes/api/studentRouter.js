@@ -16,6 +16,7 @@ router.get('/', async (req, res) => {
         s.admission_date,
         s.city,
         d.department_name,
+        d.department_id,
         st.staff_name
       FROM students s
       JOIN department d ON s.department_id = d.department_id

@@ -6,7 +6,7 @@ import staffApiRouter from './routes/api/staffRouter.js'
 
 //ui
 import studentUiRouter from './routes/ui/studentUiRouter.js'
-
+import staffUiRouter from './routes/ui/staffUiRouter.js'
 const app = express()
 app.use(bodyParser.json())
 app.set('view engine', 'ejs');
@@ -19,11 +19,11 @@ app.get('/home', async (req,res) => {
 
 // api routes 
 app.use('/api/student/', studentApiRouter)
-app.use('/staff',staffApiRouter)
+app.use('/api/staff/',staffApiRouter)
 
 //ui routes
 app.use('/student/', studentUiRouter)
-
+app.use('/staff/',staffUiRouter)
 try{
     app.listen(3000)
     console.log('server runnig http://localhost:3000')

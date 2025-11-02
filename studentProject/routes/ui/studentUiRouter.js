@@ -20,7 +20,7 @@ router.get('/add', (req, res) => {
 
 router.get('/edit/:id', async (req, res) => {
   try {
-    const { id } = req.params
+    const {id} = req.params
     const response = await fetch(`http://localhost:3000/api/student/${id}`);
 
     if (response.status === 200) {
