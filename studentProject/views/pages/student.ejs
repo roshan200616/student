@@ -28,6 +28,12 @@
         background-color: transparent;
         cursor: pointer;
       }
+      .detail{
+        color: black;
+      }
+      .detail:hover{
+        text-decoration: blue;
+      }
     </style>
 </head>
 
@@ -82,7 +88,7 @@
                     <%=Student.phone_number%>
                   </td>
                   <td>
-                    <%= new Date(Student.date_of_birth).toLocaleDateString()%>
+                    <%= new Date(Student.date_of_birth).toLocaleDateString('en-IN')%>
                   </td>
                   <td>
                     <%=Student.gender%>
@@ -91,13 +97,13 @@
                     <%=Student.department_name%>
                   </td>
                   <td>
-                    <%= new Date(Student.admission_date).toLocaleDateString() %>
+                    <%= new Date(Student.admission_date).toLocaleDateString('en-IN') %>
                   </td>
                   <td>
                     <%=Student.city%>
                   </td>
                    <td >
-                    <a href="staff/detail/<%=Student.department_id%>" class="text-reset text-decoration-none" style="text-decoration: none !important; color: black;">
+                    <a href="staff/detail/<%=Student.department_id%>" class="text-reset text-decoration-none detail">
                       <%=Student.staff_name%>
                     </a>
                   </td>
@@ -118,7 +124,6 @@
     <script>
       function deleteStudent(studentId) {
         const id = studentId
-        console.log(typeof (id))
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         const requestOptions = {

@@ -15,16 +15,16 @@ router.get('/detail/:id',async (req,res) =>{
      const response  = await fetch(`http://localhost:3000/api/staff/${id}`)
      if(response.status === 200){
         const data = await response.json()
-        const pageName = 'detail'
-        res.render('pages/staff.ejs',{data,pageName})
 
+        res.render('pages/staffCard.ejs',{data})
      }
      else{
-        res.render('pages/staff.ejs',{data:[]})
+        res.render('pages/staffCard.ejs',{data:[]})
      }
     }
     catch(err){
-        console.log(error)
+        console.log(error.message)
     }
 })
+
 export default router
