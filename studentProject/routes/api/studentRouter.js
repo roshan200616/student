@@ -106,7 +106,7 @@ router.put('/:student_id', async (req, res) => {
         const set = keys.map(key => `${key} =?`).join(', ')
         const result = await queryExec(`update students set ${set} where student_id=? `, [...values, id])
         if (result.affectedRows === 0) {
-            res.status(404).send('not found')
+            res.status(404).json({message: 'not found'})
         }
         else {
             res.status(200).send("updated successful")

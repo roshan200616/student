@@ -11,6 +11,7 @@ router.get('/', async (req, res) => {
             s.hire_date,
             s.position,
             s.salary,
+            s.gender,
             d.department_name
             from staff  s 
              join department d ON s.department_id = d.department_id`)
@@ -31,6 +32,7 @@ router.get('/:id', async (req, res) => {
                     s.phone_number,
                     s.hire_date,
                     s.position,
+                    s.gender,
                     s.salary,
                     d.department_name
                     FROM staff s
@@ -49,20 +51,83 @@ router.get('/:id', async (req, res) => {
     }
 
 })
-router.delete('/:id',async (req,res) =>{
-   try{ 
+router.post('/', async (req, res) => {
+    try {
+        const data = req.body
+        const values = [
+            data.staff_name,
+            data.email,
+            data.phone_number,
+            data.hire_date,
+            data.position,
+            data.gender,
+            data.salary,
+            data.department_id
+        ]
+
+        if (
+            data.staff_name === '' ||
+            data.email === '' ||
+            data.phone_number === '' ||
+            data.hire_date === '' ||
+            data.position === '' ||
+            data.gender === '' ||
+            data.salary === '' ||
+            data.department_id === ''
+        ) {
+            return res.status(400).json({ messare: 'All fileds are fill' })
+        }
+        const result = await queryExec(`insert into staff(
+            staff_name,
+            email,
+            phone_number ,
+            hire_date ,
+            position ,
+            gender,
+            salary ,
+            department_id ) 
+            values(?,?,?,?,?,?,?,?)`, values)
+        if (result.affectedRows === 0) {
+            res.status(404).send("not found")
+        }
+        else {
+            res.status(201).send("insert succefully")
+        }
+    }
+    catch (err) {
+        res.status(500).send(err)
+    }
+
+})
+router.put('/:id', async (req, res) => {
     const id = req.params.id
-    const result = await queryExec(`delete from staff where staff_id = ?`,[id])
-    if(result.affectedRows === 0){
-        res.status(404).send('data not found')
+    const data = req.body
+    const key = Object.keys(data)
+    const values = Object.values(data)
+    const set = key.map(key => `${key}=?`).join(',')
+    const result = await queryExec(`update staff set ${set} where staff_id=? `, [...values, id])
+     if (result.affectedRows === 0){
+        res.status(404).send('not found')
+     }
+     else{
+        res.status(200).send('updated successful')
+     }
+})
+router.delete('/:id', async (req, res) => {
+    try {
+        const id = req.params.id
+        const result = await queryExec(`delete from staff where staff_id = ?`, [id])
+        if (result.affectedRows === 0) {
+            res.status(404).send('data not found')
+        }
+        else {
+            res.status(200).send('deleted succefully')
+        }
     }
-    else{
-        res.status(200).send('deleted succefully')
-    }
-    }
-    catch(err){
+    catch (err) {
         res.status(500).send('server error')
         console.log(err)
     }
 })
+
 export default router

@@ -37,6 +37,7 @@ try{
   phone_number VARCHAR(15),
   hire_date DATE,
   position VARCHAR(100),
+  gender ENUM('Male', 'Female', 'Other'),
   salary DECIMAL(10,2),
   department_id INT,
   FOREIGN KEY (department_id) REFERENCES department(department_id)

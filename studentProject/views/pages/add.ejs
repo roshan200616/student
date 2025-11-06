@@ -129,7 +129,7 @@
     <!-- ✅ FIXED SCRIPT -->
     <script>
       const pageName = "<%= pageName %>";
-      const studentId = "<%= data.student_id || '' %>";
+      const id = "<%= data.staff_id %>";
       let fname = document.getElementById('firstName')
       let lname = document.getElementById('lastName')
       let email = document.getElementById('email')
@@ -171,7 +171,7 @@
           admission_date: dateDom.value,
           city: cityDom.value
         };
-        const id = "<%= data.student_id %>"
+        
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         const raw = JSON.stringify(data);

@@ -7,7 +7,8 @@ router.get('/', async(req, res) => {
     const response = await fetch(`http://localhost:3000/api/student`)
     if(response.status === 200) {
         const data = await response.json()
-        res.render('pages/student.ejs', {data})
+        const method = 'delete'
+        res.render('pages/student.ejs', {data,method})
     }else {
         res.render('pages/student.ejs', {data: []})
     }
