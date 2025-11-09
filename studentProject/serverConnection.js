@@ -40,6 +40,7 @@ try{
   gender ENUM('Male', 'Female', 'Other'),
   salary DECIMAL(10,2),
   department_id INT,
+  department VARCHAR(30),
   FOREIGN KEY (department_id) REFERENCES department(department_id)
 );`
 

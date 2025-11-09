@@ -19,8 +19,8 @@ router.get('/', async (req, res) => {
         d.department_id,
         st.staff_name
       FROM students s
-      JOIN department d ON s.department_id = d.department_id
-      JOIN staff st ON s.department_id = st.department_id
+      left JOIN department d ON s.department_id = d.department_id
+      left JOIN staff st ON s.department_id = st.department_id
     `);
 
         if (data.length === 0) {

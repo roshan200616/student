@@ -21,6 +21,35 @@ router.get('/', async (req, res) => {
         console.error(err)
     }
 })
+router.get('/staff_id/:id', async (req, res) => {
+  try {
+    const staff_id = req.params.id;
+    const data = await queryExec(`
+      SELECT 
+        s.staff_id,
+        s.staff_name,
+        s.email,
+        s.phone_number,
+        s.hire_date,
+        s.position,
+        s.gender,
+        s.salary,
+        d.department_name
+      FROM staff s
+      JOIN department d ON s.department_id = d.department_id
+      WHERE s.staff_id = ?;
+    `, [staff_id]);
+
+    if (data.length === 0) {
+      res.status(404).send('Staff not found');
+    } else {
+      res.status(200).send(data[0]);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+});
 router.get('/:id', async (req, res) => {
     try {
 
@@ -51,6 +80,8 @@ router.get('/:id', async (req, res) => {
     }
 
 })
+
+
 router.post('/', async (req, res) => {
     try {
         const data = req.body

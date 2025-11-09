@@ -7,8 +7,7 @@ router.get('/', async(req, res) => {
     const response = await fetch(`http://localhost:3000/api/student`)
     if(response.status === 200) {
         const data = await response.json()
-        const method = 'delete'
-        res.render('pages/student.ejs', {data,method})
+        res.render('pages/student.ejs', {data})
     }else {
         res.render('pages/student.ejs', {data: []})
     }
@@ -21,7 +20,7 @@ router.get('/add', (req, res) => {
 
 router.get('/edit/:id', async (req, res) => {
   try {
-    const {id} = req.params
+    const { id } = req.params
     const response = await fetch(`http://localhost:3000/api/student/${id}`);
 
     if (response.status === 200) {
