@@ -3,188 +3,181 @@
 
 <head>
   <%- include('../partials/head') %>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .regForm {
-      padding: 0px 80px 0px 80px;
-      max-height: 600px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .regForm {
+        padding: 0px 80px 0px 80px;
+        max-height: 600px;
+      }
 
-    .but {
-      width: 50px;
-    }
-  </style>
+      .but {
+        width: 50px;
+      }
+    </style>
 </head>
 
 <body class="container my-5">
   <%- include('../partials/header') %>
 
-  <h2 class="text-center mb-4"><%= pageName === 'add' ? 'Add' : 'Edit' %> Staff</h2>
+    <h2 class="text-center mb-4">
+      <%= pageName==='add' ? 'Add' : 'Edit' %> Staff
+    </h2>
 
-  <form class="row g-3 border p-4 rounded shadow regForm">
+    <form class="row g-3 border p-4 rounded shadow regForm">
 
-    <!-- Staff Name -->
-    <div class="col-md-6">
-      <label for="staffName" class="form-label">Staff Name</label>
-      <input type="text" class="form-control" id="staffName" placeholder="Enter staff name"
-        value="<%= data.staff_name %>" required>
-    </div>
+      <!-- Staff Name -->
+      <div class="col-md-6">
+        <label for="staffName" class="form-label">Staff Name</label>
+        <input type="text" class="form-control" id="staffName" placeholder="Enter staff name"
+          value="<%= data.staff_name %>" required>
+      </div>
 
-    <!-- Email -->
-    <div class="col-md-6">
-      <label for="email" class="form-label">Email</label>
-      <input type="email" class="form-control" id="email" placeholder="example@gmail.com"
-        value="<%= data.email %>" required>
-    </div>
+      <!-- Email -->
+      <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="example@gmail.com" value="<%= data.email %>"
+          required>
+      </div>
 
-    <!-- Phone Number -->
-    <div class="col-md-6">
-      <label for="phone" class="form-label">Phone Number</label>
-      <input type="tel" class="form-control" id="phone" placeholder="Enter phone number"
-        value="<%= data.phone_number %>" required>
-    </div>
+      <!-- Phone Number -->
+      <div class="col-md-6">
+        <label for="phone" class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" id="phone" placeholder="Enter phone number"
+          value="<%= data.phone_number %>" required>
+      </div>
 
-    <!-- Hire Date -->
-    <div class="col-md-6">
-      <label for="hireDate" class="form-label">Hire Date</label>
-      <input type="date" 
-       class="form-control" 
-       id="hireDate"
-       name="hire_date"
-       value="<%= pageName === 'edit' && data.hire_date 
+      <!-- Hire Date -->
+      <div class="col-md-6">
+        <label for="hireDate" class="form-label">Hire Date</label>
+        <input type="date" class="form-control" id="hireDate" name="hire_date" value="<%= pageName === 'edit' && data.hire_date 
            ? new Date(data.hire_date).toISOString().split('T')[0] 
-           : '' %>" 
-       required>
+           : '' %>" required>
 
-    </div>
-
-    <!-- Position -->
-    <div class="col-md-6">
-      <label for="position" class="form-label">Position</label>
-      <input type="text" class="form-control" id="position" placeholder="Enter position"
-        value="<%= data.position %>" required>
-    </div>
-
-    <!-- Gender -->
-    <div class="col-md-6">
-      <label for="gender" class="form-label">Gender</label>
-      <select class="form-select" id="gender" required>
-        <option value="">Choose...</option>
-        <option value="Male" <%= data.gender === 'Male' ? 'selected' : '' %>>Male</option>
-        <option value="Female" <%= data.gender === 'Female' ? 'selected' : '' %>>Female</option>
-        <option value="Other" <%= data.gender === 'Other' ? 'selected' : '' %>>Other</option>
-      </select>
-    </div>
-
-    <!-- Salary -->
-    <div class="col-md-6">
-      <label for="salary" class="form-label">Salary</label>
-      <input type="number" class="form-control" id="salary" step="1000" placeholder="Enter salary"
-        value="<%= data.salary %>" required>
-    </div>
-
-    <!-- Department -->
-    <div class="col-md-6">
-      <label for="department" class="form-label">Department</label>
-      <select class="form-select" id="department" required>
-        <option value="">Choose...</option>
-        <option value="Computer Science" <%= data.department_name === "Computer Science" ? 'selected' : '' %>>Computer Science</option>
-        <option value="Information Technology" <%= data.department_name === "Information Technology" ? 'selected' : '' %>>Information Technology</option>
-        <option value="Electronics and Communication" <%= data.department_name === "Electronics and Communication" ? 'selected' : '' %>>Electronics and Communication</option>
-        <option value="Mechanical Engineering" <%= data.department_name === "Mechanical Engineering" ? 'selected' : '' %>>Mechanical Engineering</option>
-        <option value="Civil Engineering" <%= data.department_name === "Civil Engineering" ? 'selected' : '' %>>Civil Engineering</option>
-        <option value="Electrical Engineering" <%= data.department_name === "Electrical Engineering" ? 'selected' : '' %>>Electrical Engineering</option>
-        <option value="Biotechnology" <%= data.department_name === "Biotechnology" ? 'selected' : '' %>>Biotechnology</option>
-        <option value="Artificial Intelligence" <%= data.department_name === "Artificial Intelligence" ? 'selected' : '' %>>Artificial Intelligence</option>
-        <option value="Data Science" <%= data.department_name === "Data Science" ? 'selected' : '' %>>Data Science</option>
-        <option value="Business Administration" <%= data.department_name === "Business Administration" ? 'selected' : '' %>>Business Administration</option>
-      </select>
-    </div>
-
-    <!-- Buttons -->
-    <div class="d-flex flex-row gap-2 justify-content-center">
-      <div class="col-12 text-center mt-4 w-auto">
-        <button type="button" class="btn btn-secondary px-4" onclick="back()">Back to list</button>
       </div>
-      <div class="col-12 text-center mt-4 w-auto">
-        <button type="button" class="btn btn-primary px-4" onclick="addStaff(event)">Submit</button>
+
+      <!-- Position -->
+      <div class="col-md-6">
+        <label for="position" class="form-label">Position</label>
+        <input type="text" class="form-control" id="position" placeholder="Enter position" value="<%= data.position %>"
+          required>
       </div>
-    </div>
 
-  </form>
+      <!-- Gender -->
+      <div class="col-md-6">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-select" id="gender" required>
+          <option value="">Choose...</option>
+          <option value="Male" <%=data.gender==='Male' ? 'selected' : '' %>>Male</option>
+          <option value="Female" <%=data.gender==='Female' ? 'selected' : '' %>>Female</option>
+          <option value="Other" <%=data.gender==='Other' ? 'selected' : '' %>>Other</option>
+        </select>
+      </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- Salary -->
+      <div class="col-md-6">
+        <label for="salary" class="form-label">Salary</label>
+        <input type="number" class="form-control" id="salary" step="1000" placeholder="Enter salary"
+          value="<%= data.salary %>" required>
+      </div>
 
-  <script>
-    const pageName = "<%= pageName %>";
-    const id = "<%= data.staff_id %>";
-    console.log(id)
-    let staffName = document.getElementById('staffName');
-    let email = document.getElementById('email');
-    let phone = document.getElementById('phone');
-    let hireDate = document.getElementById('hireDate');
-    let position = document.getElementById('position');
-    let gender = document.getElementById('gender');
-    let salary = document.getElementById('salary');
-    let dept = document.getElementById('department');
+      <!-- Department -->
+      <div class="col-md-6">
+        <label for="department" class="form-label">Department</label>
+        <select class="form-select" id="department" required>
+          <option value="">Choose...</option>
+          <% for (let i=0; i < departmentRes.length; i++) { %>
+            <option value="<%= departmentRes[i].department_name %>"
+              <%=departmentRes[i].department_id===data.department_id ? 'selected' : '' %>>
+              <%= departmentRes[i].department_name %>
+            </option>
+            <% } %>
+        </select>
+      </div>
 
-    function back() {
-      window.location.href = "http://localhost:3000/staff";
-    }
+      <!-- Buttons -->
+      <div class="d-flex flex-row gap-2 justify-content-center">
+        <div class="col-12 text-center mt-4 w-auto">
+          <button type="button" class="btn btn-secondary px-4" onclick="back()">Back to list</button>
+        </div>
+        <div class="col-12 text-center mt-4 w-auto">
+          <button type="button" class="btn btn-primary px-4" onclick="addStaff(event)">Submit</button>
+        </div>
+      </div>
 
-    async function addStaff(event) {
-      event.preventDefault(); 
-      const department_id =
-        dept.value === "Computer Science" ? 1 :
-        dept.value === "Information Technology" ? 2 :
-        dept.value === "Electronics and Communication" ? 3 :
-        dept.value === "Mechanical Engineering" ? 4 :
-        dept.value === "Civil Engineering" ? 5 :
-        dept.value === "Electrical Engineering" ? 6 :
-        dept.value === "Biotechnology" ? 7 :
-        dept.value === "Artificial Intelligence" ? 8 :
-        dept.value === "Data Science" ? 9 :
-        dept.value === "Business Administration" ? 10 :
-        null;
-      const data = {
-        staff_name: staffName.value,
-        email: email.value,
-        phone_number: phone.value,
-        hire_date: hireDate.value,
-        position: position.value,
-        gender: gender.value,
-        salary: salary.value,
-        department_id: department_id
-      };
+    </form>
 
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-      const raw = JSON.stringify(data);
-      const requestOptions = {
-        method: pageName === 'edit' ? "PUT" : "POST",
-        headers: myHeaders,
-        body: raw,
-      };
+    <script>
+      const pageName = "<%= pageName %>";
+      const id = "<%= data.staff_id %>";
+      console.log(id)
+      let staffName = document.getElementById('staffName');
+      let email = document.getElementById('email');
+      let phone = document.getElementById('phone');
+      let hireDate = document.getElementById('hireDate');
+      let position = document.getElementById('position');
+      let gender = document.getElementById('gender');
+      let salary = document.getElementById('salary');
+      let dept = document.getElementById('department');
 
-      const url = pageName === 'edit'
-        ? `http://localhost:3000/api/staff/${id}`
-        : "http://localhost:3000/api/staff";
-
-      try {
-        const response = await fetch(url, requestOptions);
-        if (response.ok) {
-          window.location.href = "http://localhost:3000/staff";
-        }
-      } catch (error) {
-        console.error(error);
-        alert("Error: " + error);
+      function back() {
+        window.location.href = "http://localhost:3000/staff";
       }
-    }
-  </script>
+
+      async function addStaff(event) {
+        event.preventDefault();
+        const department_id =
+          dept.value === "Computer Science" ? 1 :
+            dept.value === "Information Technology" ? 2 :
+              dept.value === "Electronics and Communication" ? 3 :
+                dept.value === "Mechanical Engineering" ? 4 :
+                  dept.value === "Civil Engineering" ? 5 :
+                    dept.value === "Electrical Engineering" ? 6 :
+                      dept.value === "Biotechnology" ? 7 :
+                        dept.value === "Artificial Intelligence" ? 8 :
+                          dept.value === "Data Science" ? 9 :
+                            dept.value === "Business Administration" ? 10 :
+                              null;
+        const data = {
+          staff_name: staffName.value,
+          email: email.value,
+          phone_number: phone.value,
+          hire_date: hireDate.value,
+          position: position.value,
+          gender: gender.value,
+          salary: salary.value,
+          department_id: department_id
+        };
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify(data);
+        const requestOptions = {
+          method: pageName === 'edit' ? "PUT" : "POST",
+          headers: myHeaders,
+          body: raw,
+        };
+
+        const url = pageName === 'edit'
+          ? `http://localhost:3000/api/staff/${id}`
+          : "http://localhost:3000/api/staff";
+
+        try {
+          const response = await fetch(url, requestOptions);
+          if (response.ok) {
+            window.location.href = "http://localhost:3000/staff";
+          }
+        } catch (error) {
+          console.error(error);
+          alert("Error: " + error);
+        }
+      }
+    </script>
 </body>
 
 </html>

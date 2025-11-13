@@ -75,27 +75,12 @@
         <label for="department" class="form-label">Department</label>
         <select class="form-select" id="department" required>
           <option value="">Choose...</option>
-          <option value="Computer Science" <%=data.department==="Computer Science" ? 'selected' : '' %>>
-            Computer Science </option>
-          <option value="Information Technology" <%=data.department==="Information Technology" ? 'selected' : '' %>
-            >Information Technology</option>
-          <option value="Electronics and Communication" <%=data.department==="Electronics and Communication"
-            ? 'selected' : '' %>>Electronics and Communication</option>
-          <option value="Mechanical Engineering" <%=data.department==="Mechanical Engineering" ? 'selected' : '' %>
-            >Mechanical Engineering</option>
-          <option value="Civil Engineering" <%=data.department==="Civil Engineering" ? 'selected' : '' %>
-            >Civil Engineering</option>
-          <option value="Electrical Engineering" <%=data.department==="Electrical Engineering" ? 'selected' : '' %>
-            >Electrical Engineering</option>
-          <option value="Biotechnology" <%=data.department==="Biotechnology" ? 'selected' : '' %>
-            >Biotechnology</option>
-          <option value="Artificial Intelligence" <%=data.department==="Artificial Intelligence" ? 'selected' : '' %>
-            >Artificial Intelligence</option>
-          <option value="Data Science" <%=data.department==="Data Science" ? 'selected' : '' %>
-            >Data Science</option>
-          <option value="Business Administration" <%=data.department==="Business Administration" ? 'selected' : '' %>
-            >Business Administration</option>
-
+          <% for (let i=0; i < departmentRes.length; i++) { %>
+            <option value="<%= departmentRes[i].department_name %>" <%=departmentRes[i].department_id===data.department_id
+              ? 'selected' : '' %>>
+              <%= departmentRes[i].department_name %>
+            </option>
+            <% } %>
         </select>
       </div>
 
@@ -171,7 +156,7 @@
           admission_date: dateDom.value,
           city: cityDom.value
         };
-        
+
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         const raw = JSON.stringify(data);

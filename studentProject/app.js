@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 //api
 import studentApiRouter from './routes/api/studentRouter.js'
 import staffApiRouter from './routes/api/staffRouter.js'
+import departmentRouter from './routes/api/departmentRouter.js'
 
 //ui
 import studentUiRouter from './routes/ui/studentUiRouter.js'
@@ -20,7 +21,7 @@ app.get('/home', async (req,res) => {
 // api routes 
 app.use('/api/student/', studentApiRouter)
 app.use('/api/staff/',staffApiRouter)
-
+app.use('/api/department/',departmentRouter)
 //ui routes
 app.use('/student/', studentUiRouter)
 app.use('/staff/',staffUiRouter)

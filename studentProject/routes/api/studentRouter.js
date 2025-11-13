@@ -4,6 +4,32 @@ import { queryExec } from "../../serverConnection.js";
 
 router.get('/', async (req, res) => {
     try {
+        let page
+        let limit
+        if (req.query.limit === undefined) {
+            limit = 5
+        } else {
+            limit = req.query.limit
+        }
+        if (req.query.page === undefined) {
+            page = 1
+        } else {
+            page = req.query.page
+        }
+
+        const limitNo = Number(limit)
+        const pageNo = Number(page)
+        const offset = (pageNo - 1) * limitNo
+
+        const response = {
+            limit: 0,
+            page: 0,
+            totalRecords: 0,
+            data: [],
+
+        }
+        const result = await queryExec(`select * from students`)
+
         const data = await queryExec(`
       SELECT 
         s.student_id,
@@ -21,12 +47,16 @@ router.get('/', async (req, res) => {
       FROM students s
       left JOIN department d ON s.department_id = d.department_id
       left JOIN staff st ON s.department_id = st.department_id
+      limit ${limitNo} offset ${offset}
     `);
-
+        response.data = data
+        response.limit = limitNo
+        response.page = pageNo
+        response.totalRecords = result.length
         if (data.length === 0) {
             res.status(404).send("No data found");
         } else {
-            res.status(200).send(data);
+            res.status(200).send(response);
         }
     } catch (err) {
         res.status(500).send('Server error: ' + err);
@@ -106,7 +136,7 @@ router.put('/:student_id', async (req, res) => {
         const set = keys.map(key => `${key} =?`).join(', ')
         const result = await queryExec(`update students set ${set} where student_id=? `, [...values, id])
         if (result.affectedRows === 0) {
-            res.status(404).json({message: 'not found'})
+            res.status(404).json({ message: 'not found' })
         }
         else {
             res.status(200).send("updated successful")

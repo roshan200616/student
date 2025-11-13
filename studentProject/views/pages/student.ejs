@@ -28,10 +28,12 @@
         background-color: transparent;
         cursor: pointer;
       }
-      .detail{
+
+      .detail {
         color: black;
       }
-      .detail:hover{
+
+      .detail:hover {
         text-decoration: blue;
       }
     </style>
@@ -102,7 +104,7 @@
                   <td>
                     <%=Student.city%>
                   </td>
-                   <td >
+                  <td>
                     <a href="staff/detail/<%=Student.department_id%>" class="text-reset text-decoration-none detail">
                       <%=Student.staff_name%>
                     </a>
@@ -114,13 +116,27 @@
                     </a>
                     <button onclick="deleteStudent(<%=Student.student_id%>)">🗑️</button>
                   </td>
-                 
+
                 </tr>
                 <%})%>
                   <%}%>
         </tbody>
       </table>
+   
     </div>
+       <nav aria-label="Page navigation example">
+        <ul class="pagination d-flex justify-content-center">
+          <li class="<%= currentPage === 1 ? 'page-item disabled': 'page-item'%>"><a class="page-link" href="?page=<%= currentPage%>">Previous</a></li>
+          <% for(let i=0;i < pageCount; i++){%>
+          <li class="page-item">
+            <a class="page-link" href="?page=<%= i + 1 %>">
+              <%= i + 1 %>
+            </a>
+          </li>
+          <%}%>      
+          <li class="<%= currentPage === 1 ? 'page-item disabled': 'page-item'%>"><a class="page-link" href="?page=<%currentPage + 1%>">Next</a></li>
+        </ul>
+      </nav>
     <script>
       function deleteStudent(studentId) {
         const id = studentId

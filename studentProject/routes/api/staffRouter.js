@@ -3,7 +3,35 @@ import { queryExec } from "../../serverConnection.js";
 const router = express.Router()
 router.get('/', async (req, res) => {
     try {
-        const data = await queryExec(`select 
+        let page
+        let limit
+        if (req.query.limit === undefined) {
+            limit = 5
+        } else {
+            limit = req.query.limit
+        }
+        if (req.query.page === undefined) {
+            page = 1
+        } else {
+            page = req.query.page
+        }
+
+        const limitNo = Number(limit)
+        const pageNo = Number(page)
+        const offset = (pageNo - 1) * limitNo
+
+        const response = {
+            limit: 0,
+            page: 0,
+            totalRecords: 0,
+            data: [],
+
+        }
+        const result = await queryExec(`select * from staff`)
+
+        const data = await queryExec(
+            `
+            select 
             s.staff_id,
             s.staff_name,
             s.email,
@@ -14,17 +42,24 @@ router.get('/', async (req, res) => {
             s.gender,
             d.department_name
             from staff  s 
-             join department d ON s.department_id = d.department_id`)
-        res.status(200).send(data)
+            join department d ON s.department_id = d.department_id
+             limit ${limitNo} offset ${offset}`
+
+        )
+        response.data = data;
+        response.page = pageNo;
+        response.limit = limit
+        response.totalRecords = result.length
+        res.status(200).send(response)
     }
     catch (err) {
         console.error(err)
     }
 })
 router.get('/staff_id/:id', async (req, res) => {
-  try {
-    const staff_id = req.params.id;
-    const data = await queryExec(`
+    try {
+        const staff_id = req.params.id;
+        const data = await queryExec(`
       SELECT 
         s.staff_id,
         s.staff_name,
@@ -40,15 +75,15 @@ router.get('/staff_id/:id', async (req, res) => {
       WHERE s.staff_id = ?;
     `, [staff_id]);
 
-    if (data.length === 0) {
-      res.status(404).send('Staff not found');
-    } else {
-      res.status(200).send(data[0]);
+        if (data.length === 0) {
+            res.status(404).send('Staff not found');
+        } else {
+            res.status(200).send(data[0]);
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server error');
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server error');
-  }
 });
 router.get('/:id', async (req, res) => {
     try {
@@ -80,7 +115,6 @@ router.get('/:id', async (req, res) => {
     }
 
 })
-
 
 router.post('/', async (req, res) => {
     try {
@@ -137,12 +171,12 @@ router.put('/:id', async (req, res) => {
     const values = Object.values(data)
     const set = key.map(key => `${key}=?`).join(',')
     const result = await queryExec(`update staff set ${set} where staff_id=? `, [...values, id])
-     if (result.affectedRows === 0){
+    if (result.affectedRows === 0) {
         res.status(404).send('not found')
-     }
-     else{
+    }
+    else {
         res.status(200).send('updated successful')
-     }
+    }
 })
 router.delete('/:id', async (req, res) => {
     try {
