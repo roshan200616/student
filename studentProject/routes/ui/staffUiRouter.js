@@ -6,26 +6,39 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     let page
-    let limit 
-    if(req.query.limit === undefined) {
-        limit = 5
-    }else {
-        limit = req.query.limit
+    let limit
+    let search
+    if (req.query.limit === undefined) {
+      limit = 5
+    } else {
+      limit = req.query.limit
     }
-    if(req.query.page === undefined) {
-        page = 1
-    }else {
-        page = req.query.page
+    if (req.query.page === undefined) {
+      page = 1
+    } else {
+      page = req.query.page
     }
-    const response = await fetch(`http://localhost:3000/api/staff?page=${page}`);
-    if (response.status===200) {
+    if (req.query.search === undefined) {
+      search = ''
+    }
+    else {
+      search = req.query.search
+    }
+    const response = await fetch(`http://localhost:3000/api/staff?limit=${limit}&page=${page}&search=${search}`);
+    if (response.status === 200) {
       const staffRes = await response.json();
       const records = staffRes.totalRecords
       const pageCount = Math.ceil(records / limit);
-     const   currentPage=staffRes.page
-      res.render('pages/staff.ejs', { data: staffRes.data , pageCount, currentPage});
+      const currentPage = staffRes.page
+      const limitno = staffRes.limit
+      res.render('pages/staff.ejs', { data: staffRes.data, pageCount, currentPage, limitno });
     } else {
-      res.render('pages/staff.ejs', { data: [] });
+      const staffRes = await response.json();
+      const currentPage = staffRes.page
+      const records = staffRes.totalRecords
+      const pageCount = Math.ceil(records / limit);
+      const limitno = staffRes.limit
+      res.render('pages/staff.ejs', { data: [], currentPage, pageCount, limitno });
     }
   } catch (err) {
     console.error('Error fetching staff:', err.message);
@@ -48,16 +61,16 @@ router.get('/detail/:id', async (req, res) => {
     res.render('pages/staffCard.ejs', { data: [] });
   }
 });
-router.get('/add',async (req, res) => {
-    const pageName = 'add'
-    const departmentResponse = await fetch(`http://localhost:3000/api/department`);
-    if(departmentResponse.status === 200){
-      const departmentRes = await departmentResponse.json()
-    res.render('pages/staffAdd.ejs',{data: {}, pageName,departmentRes})
-     }
-     else{
-       res.render('pages/staffAdd.ejs',{data:{},pageName,departmentRes:[]})
-     }
+router.get('/add', async (req, res) => {
+  const pageName = 'add'
+  const departmentResponse = await fetch(`http://localhost:3000/api/department`);
+  if (departmentResponse.status === 200) {
+    const departmentRes = await departmentResponse.json()
+    res.render('pages/staffAdd.ejs', { data: {}, pageName, departmentRes })
+  }
+  else {
+    res.render('pages/staffAdd.ejs', { data: {}, pageName, departmentRes: [] })
+  }
 })
 
 router.get('/edit/:id', async (req, res) => {

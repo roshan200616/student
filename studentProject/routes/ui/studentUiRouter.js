@@ -6,6 +6,7 @@ const router = express.Router()
 router.get('/', async(req, res) => {
    let page
         let limit
+        let search 
         if (req.query.limit === undefined) {
             limit = 5
         } else {
@@ -16,14 +17,23 @@ router.get('/', async(req, res) => {
         } else {
             page = req.query.page
         }
-    const response = await fetch(`http://localhost:3000/api/student`)
+        if(req.query.search === undefined)
+        {
+          search = ''
+        }
+        else{
+          search = req.query.search
+        }
+      console.log(search)
+    const response = await fetch(`http://localhost:3000/api/student?limit=${limit}&page=${page}&search=${search}`)
     if(response.status === 200) {
         const studentRes = await response.json()
         const data = studentRes.data
          const records = studentRes.totalRecords
       const pageCount = Math.ceil(records / limit);
      const   currentPage=studentRes.page
-        res.render('pages/student.ejs', {data,pageCount,currentPage,records})
+     const limitno= studentRes.limit
+        res.render('pages/student.ejs', {data,pageCount,currentPage,records,limitno})
     }else {
         res.render('pages/student.ejs', {data: []})
     }

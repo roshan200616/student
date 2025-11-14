@@ -36,6 +36,16 @@
       .detail:hover {
         text-decoration: blue;
       }
+          .limit{
+        height: 40px;
+      }
+            .dropdown {
+            display: flex
+;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 10px;
+      }
     </style>
 </head>
 
@@ -122,21 +132,43 @@
                   <%}%>
         </tbody>
       </table>
-   
+
     </div>
-       <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" class="dropdown">
+      <div>
         <ul class="pagination d-flex justify-content-center">
-          <li class="<%= currentPage === 1 ? 'page-item disabled': 'page-item'%>"><a class="page-link" href="?page=<%= currentPage%>">Previous</a></li>
+          <li class="<%= currentPage === 1 ? 'page-item disabled': 'page-item'%>"><a class="page-link"
+              href="?page=<%= currentPage%>">Previous</a></li>
           <% for(let i=0;i < pageCount; i++){%>
-          <li class="page-item">
-            <a class="page-link" href="?page=<%= i + 1 %>">
-              <%= i + 1 %>
-            </a>
-          </li>
-          <%}%>      
-          <li class="<%= currentPage === 1 ? 'page-item disabled': 'page-item'%>"><a class="page-link" href="?page=<%currentPage + 1%>">Next</a></li>
+            <li class="page-item">
+              <a class="page-link" href="?page=<%= i + 1 %>">
+                <%= i + 1 %>
+              </a>
+            </li>
+            <%}%>
+              <li class="<%= currentPage === 1 ? 'page-item disabled': 'page-item'%>"><a class="page-link"
+                  href="?page=<%currentPage + 1%>">Next</a></li>
         </ul>
-      </nav>
+      </div>
+      <div class="btn-group ">
+        <button type="button" class="btn btn-danger dropdown-toggle limit" data-toggle="dropdown">
+          <%= limitno%>
+        </button>
+
+        <div class="dropdown-menu">
+
+          <form method="GET">
+            <button class="dropdown-item" name="limit" value="5">5</button>
+            <button class="dropdown-item" name="limit" value="10">10</button>
+            <button class="dropdown-item" name="limit" value="15">15</button>
+            <button class="dropdown-item" name="limit" value="20">20</button>
+            <button class="dropdown-item" name="limit" value="25">25</button>
+            <input type="hidden" name="page" value="<%= currentPage %>">
+          </form>
+
+        </div>
+      </div>
+    </nav>
     <script>
       function deleteStudent(studentId) {
         const id = studentId

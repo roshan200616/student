@@ -5,6 +5,7 @@ router.get('/', async (req, res) => {
     try {
         let page
         let limit
+        let search
         if (req.query.limit === undefined) {
             limit = 5
         } else {
@@ -15,7 +16,12 @@ router.get('/', async (req, res) => {
         } else {
             page = req.query.page
         }
-
+        if (req.query.search === undefined) {
+            search = ''
+        }
+        else {
+            search = req.query.search
+        }
         const limitNo = Number(limit)
         const pageNo = Number(page)
         const offset = (pageNo - 1) * limitNo
@@ -27,8 +33,7 @@ router.get('/', async (req, res) => {
             data: [],
 
         }
-        const result = await queryExec(`select * from staff`)
-
+        const result = await queryExec(`select * from  staff where staff_name like '%${search}%' `)
         const data = await queryExec(
             `
             select 
@@ -43,19 +48,28 @@ router.get('/', async (req, res) => {
             d.department_name
             from staff  s 
             join department d ON s.department_id = d.department_id
+            where s.staff_name like '%${search}%'
              limit ${limitNo} offset ${offset}`
 
         )
-        response.data = data;
-        response.page = pageNo;
-        response.limit = limit
-        response.totalRecords = result.length
-        res.status(200).send(response)
+        if (data.length === 0) {
+            res.status(404).send(response)
+        }
+        else {
+            response.data = data;
+            response.page = pageNo;
+            response.limit = limitNo
+            response.totalRecords = result.length
+            res.status(200).send(response);
+        }
+
+
     }
     catch (err) {
         console.error(err)
     }
 })
+
 router.get('/staff_id/:id', async (req, res) => {
     try {
         const staff_id = req.params.id;

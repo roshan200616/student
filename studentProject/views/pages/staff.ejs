@@ -3,143 +3,199 @@
 
 <head>
   <%- include('../partials/head') %>
-    <style>
-      .staff-table {
-        margin: 0px 80px 0px 80px;
-        max-height: 400px;
-        overflow-y: auto;
-        overflow-x: auto;
-        border: 1px solid #ccc;
-      }
 
-      .add {
-        display: flex;
-        justify-content: end;
-        padding: 0px 36px 0px 36px;
-      }
+  <style>
+    .staff-table {
+      margin: 0px 80px;
+      max-height: 400px;
+      overflow-y: auto;
+      overflow-x: auto;
+      border: 1px solid #ccc;
+    }
 
-      .action {
-        display: flex;
-        gap: 2px;
-      }
+    .dropdown {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: center;
+      gap: 10px;
+    }
 
-      .action>button {
-        border: none;
-        background-color: transparent;
-        cursor: pointer;
-      }
-    </style>
+    .add {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0px 36px;
+    }
+
+    .action {
+      display: flex;
+      gap: 2px;
+    }
+
+    .action>button {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .limit {
+      height: 40px;
+    }
+
+    .list {
+      height: 32px;
+      padding-top: 2px;
+    }
+  </style>
 </head>
 
 <body class="main">
+
   <%- include('../partials/header') %>
-    <div class="add">
-      <a class="btn btn-primary " href="/staff/add" role="button">Add</a>
+
+  <div class="staff-table">
+    <div class="d-flex">
+
+      <!-- Search By Dropdown -->
+      <div class="btn-group">
+        <button type="button" class="btn btn-danger dropdown-toggle list" data-toggle="dropdown">
+          Search by
+        </button>
+
+        <div class="dropdown-menu">
+          <form method="GET">
+            <button type="submit" class="dropdown-item" name="searchby" value="staff_name">Staff Name</button>
+            <button type="submit" class="dropdown-item" name="searchby" value="email">Email</button>
+            <button type="submit" class="dropdown-item" name="searchby" value="phone_number">Phone Number</button>
+            <button type="submit" class="dropdown-item" name="searchby" value="hire_date">Hire Date</button>
+            <button type="submit" class="dropdown-item" name="searchby" value="position">Position</button>
+            <button type="submit" class="dropdown-item" name="searchby" value="gender">Gender</button>
+            <button type="submit" class="dropdown-item" name="searchby" value="salary">Salary</button>
+            <button type="submit" class="dropdown-item" name="searchby" value="department_name">Department</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Search Box -->
+      <div class="ml-2">
+        <form id="searchForm" method="GET" action="/staff">
+          <input type="text" id="searchInput" name="search" placeholder="Search staff...">
+          <button type="submit">Search</button>
+        </form>
+      </div>
     </div>
-    <div class="staff-table">
-      <table class="table table-striped ">
-        <thead>
-          <tr scope="row">
-            <th scope="col">Staff ID</th>
-            <th scope="col">Staff Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Phone Number</th>
-            <th scope="col">Hire Date</th>
-            <th scope="col">Position</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Salary</th>
-            <th scope="col">Department</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% if (data.length===0) { %>
-            <tr>
-              <td colspan="11" class="text-center">No records</td>
-            </tr>
-            <% } else { %>
-              <% data.forEach(staff=> { %>
-                <tr>
-                  <td>
-                    <%= staff.staff_id %>
-                  </td>
-                  <td>
-                    <%= staff.staff_name %>
-                  </td>
-                  <td>
-                    <%= staff.email %>
-                  </td>
-                  <td>
-                    <%= staff.phone_number %>
-                  </td>
-                  <td>
-                    <%= new Date(staff.hire_date).toLocaleDateString('en-IN') %>
-                  </td>
-                  <td>
-                    <%= staff.position %>
-                  </td>
-                  <td>
-                    <%= staff.gender%>
-                  </td>
-                  <td>
-                    <%= staff.salary %>
-                  </td>
-                  <td>
-                    <%= staff.department_name%>
-                  </td>
-                  <td class="action">
-                    <a href="staff/edit/<%= staff.staff_id %>" class="text-reset text-decoration-none"
-                      style="text-decoration: none !important;">
-                      ✏️
-                    </a>
-                    <button onclick="deletestaff(<%= staff.staff_id %>)">🗑️</button>
-                  </td>
-                </tr>
-                <% }) %>
-                  <% } %>
-        </tbody>
-      </table>
-    </div>
-    <nav aria-label="Page navigation example  ">
-      <ul class="pagination d-flex justify-content-center">
-        <li class="<%= currentPage === 1 ? 'page-item disabled' : 'page-item' %>"><a class="page-link" href="?page=<%= currentPage - 1%>">Previous</a></li>
-        <% for (let i=0; i < pageCount; i++) { %>
-          <li class="page-item">
-            <a class="page-link" href="?page=<%= i + 1 %>">
-              <%= i + 1 %>
+
+    <!-- TABLE -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Staff ID</th>
+          <th>Staff Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Hire Date</th>
+          <th>Position</th>
+          <th>Gender</th>
+          <th>Salary</th>
+          <th>Department</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% if (data.length === 0) { %>
+        <tr>
+          <td colspan="11" class="text-center">No records</td>
+        </tr>
+        <% } else { %>
+
+        <% data.forEach(staff => { %>
+        <tr>
+          <td><%= staff.staff_id %></td>
+          <td><%= staff.staff_name %></td>
+          <td><%= staff.email %></td>
+          <td><%= staff.phone_number %></td>
+          <td><%= new Date(staff.hire_date).toLocaleDateString('en-IN') %></td>
+          <td><%= staff.position %></td>
+          <td><%= staff.gender %></td>
+          <td><%= staff.salary %></td>
+          <td><%= staff.department_name %></td>
+
+          <td class="action">
+            <a href="/staff/edit/<%= staff.staff_id %>" class="text-reset text-decoration-none">
+              ✏️
             </a>
-          </li>
-          <% } %>
-          <li class="<%= currentPage === pageCount ? 'page-item disabled' : 'page-item' %>"><a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a></li>
+            <button onclick="deletestaff(<%= staff.staff_id %>)">🗑️</button>
+          </td>
+        </tr>
+        <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination + Limit -->
+  <nav aria-label="Page navigation example" class="dropdown">
+
+    <!-- Pagination -->
+    <div>
+      <ul class="pagination d-flex justify-content-center">
+
+        <li class="<%= currentPage === 1 ? 'page-item disabled' : 'page-item' %>">
+          <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
+        </li>
+
+        <% for (let i = 1; i <= pageCount; i++) { %>
+        <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+        <% } %>
+
+        <li class="<%= currentPage === pageCount ? 'page-item disabled' : 'page-item' %>">
+          <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
+        </li>
+
       </ul>
-    </nav>
-    <script>
-        function deletestaff(id) {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        const requestOptions = {
-          method: "DELETE",
-          headers: myHeaders,
-          redirect: "follow"
-        };
-        try {
-          fetch(`http://localhost:3000/api/staff/${id}`, requestOptions)
-            .then(async (response) => {
-              if (response.ok) {
-                window.location.reload()
+    </div>
 
-              }
-              else {
-                const error = await response.json()
-                alter(alert)
-              }
-            })
-        }
-        catch (error) {
-          console.error(error);
-        }
-      }
-    </script>
+    <!-- Limit Dropdown -->
+    <div class="btn-group">
+      <button type="button" class="btn btn-danger dropdown-toggle limit" data-toggle="dropdown">
+        <%= limitno %>
+      </button>
+
+      <div class="dropdown-menu">
+        <form method="GET">
+          <button class="dropdown-item" name="limit" value="5">5</button>
+          <button class="dropdown-item" name="limit" value="10">10</button>
+          <button class="dropdown-item" name="limit" value="15">15</button>
+          <button class="dropdown-item" name="limit" value="20">20</button>
+          <button class="dropdown-item" name="limit" value="25">25</button>
+          <input type="hidden" name="page" value="<%= currentPage %>">
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <!-- DELETE FUNCTION -->
+  <script>
+    function deletestaff(id) {
+      if (!confirm("Are you sure you want to delete this staff?")) return;
+
+      fetch(`http://localhost:3000/api/staff/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" }
+      })
+        .then(async (response) => {
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            const error = await response.json();
+            alert(error.message);
+          }
+        })
+        .catch(err => console.error(err));
+    }
+  </script>
+
 </body>
-
 </html>
