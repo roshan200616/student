@@ -6,22 +6,13 @@ router.get('/', async (req, res) => {
         let page
         let limit
         let search
-        if (req.query.limit === undefined) {
-            limit = 5
-        } else {
-            limit = req.query.limit
-        }
-        if (req.query.page === undefined) {
-            page = 1
-        } else {
-            page = req.query.page
-        }
-        if (req.query.search === undefined) {
-            search = ''
-        }
-        else {
-            search = req.query.search
-        }
+        let searchBy
+
+        limit = req.query.limit || 5
+        page = req.query.page || 1
+        search = req.query.search || ""
+        searchBy = req.query.searchby || "staff_name";
+
         const limitNo = Number(limit)
         const pageNo = Number(page)
         const offset = (pageNo - 1) * limitNo
@@ -30,12 +21,16 @@ router.get('/', async (req, res) => {
             limit: 0,
             page: 0,
             totalRecords: 0,
+            search:'',
+            searchBy: 's.staff_name',
             data: [],
 
         }
-        const result = await queryExec(`select * from  staff where staff_name like '%${search}%' `)
-        const data = await queryExec(
-            `
+        const result = await queryExec(`select * from  staff where ${searchBy} like '%${search}%' `)
+        if (searchBy === 'gender' || searchBy === 'phone_number' || searchBy === 'salary') {
+            console.log("roshan")
+            const data = await queryExec(
+                `
             select 
             s.staff_id,
             s.staff_name,
@@ -48,19 +43,55 @@ router.get('/', async (req, res) => {
             d.department_name
             from staff  s 
             join department d ON s.department_id = d.department_id
-            where s.staff_name like '%${search}%'
-             limit ${limitNo} offset ${offset}`
-
-        )
-        if (data.length === 0) {
-            res.status(404).send(response)
+            where s.${searchBy} = '${search}'
+             limit ${limitNo} offset ${offset}`)
+            if (data.length === 0) {
+                res.status(404).send(response)
+            }
+            else {
+                response.data = data;
+                response.page = pageNo;
+                response.limit = limitNo;
+                response.search = search;
+                response.searchBy = searchBy;
+                response.totalRecords = result.length
+                res.status(200).send(response);
+            }
+     
         }
         else {
-            response.data = data;
-            response.page = pageNo;
-            response.limit = limitNo
-            response.totalRecords = result.length
-            res.status(200).send(response);
+            const data = await queryExec(
+                `
+            select 
+            s.staff_id,
+            s.staff_name,
+            s.email,
+            s.phone_number,
+            s.hire_date,
+            s.position,
+            s.salary,
+            s.gender,
+            d.department_name
+            from staff  s 
+            join department d ON s.department_id = d.department_id
+            where s.${searchBy} like '%${search}%'
+             limit ${limitNo} offset ${offset}`
+
+            )
+            if (data.length === 0) {
+                res.status(404).send(response)
+            }
+            else {
+                response.data = data;
+                response.page = pageNo;
+                response.limit = limitNo
+                response.totalRecords = result.length
+                response.search = search;
+                response.searchBy = searchBy;
+                res.status(200).send(response);
+
+            }
+
         }
 
 

@@ -7,6 +7,7 @@ router.get('/', async (req, res) => {
   try {
     let page
     let limit
+    let searchBy
     let search
     if (req.query.limit === undefined) {
       limit = 5
@@ -24,14 +25,22 @@ router.get('/', async (req, res) => {
     else {
       search = req.query.search
     }
-    const response = await fetch(`http://localhost:3000/api/staff?limit=${limit}&page=${page}&search=${search}`);
+    if(req.query.searchby === undefined){
+      searchBy= ''
+    }
+    else{
+      searchBy = req.query.searchby
+    }
+    const response = await fetch(`http://localhost:3000/api/staff?limit=${limit}&page=${page}&search=${search}&searchby=${searchBy}`);
     if (response.status === 200) {
       const staffRes = await response.json();
       const records = staffRes.totalRecords
       const pageCount = Math.ceil(records / limit);
       const currentPage = staffRes.page
       const limitno = staffRes.limit
-      res.render('pages/staff.ejs', { data: staffRes.data, pageCount, currentPage, limitno });
+      const search = staffRes.search
+      const searchBy = staffRes.searchBy
+      res.render('pages/staff.ejs', { data: staffRes.data, pageCount, currentPage, limitno ,search,searchBy});
     } else {
       const staffRes = await response.json();
       const currentPage = staffRes.page
