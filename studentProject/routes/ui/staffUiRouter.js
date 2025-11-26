@@ -47,7 +47,9 @@ router.get('/', async (req, res) => {
       const records = staffRes.totalRecords
       const pageCount = Math.ceil(records / limit);
       const limitno = staffRes.limit
-      res.render('pages/staff.ejs', { data: [], currentPage, pageCount, limitno });
+      const search = staffRes.search
+      const searchBy = staffRes.searchBy
+      res.render('pages/staff.ejs', { data: [], currentPage, pageCount, limitno ,search,searchBy});
     }
   } catch (err) {
     console.error('Error fetching staff:', err.message);

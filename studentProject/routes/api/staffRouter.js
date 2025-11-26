@@ -28,7 +28,6 @@ router.get('/', async (req, res) => {
         }
         const result = await queryExec(`select * from  staff where ${searchBy} like '%${search}%' `)
         if (searchBy === 'gender' || searchBy === 'phone_number' || searchBy === 'salary') {
-            console.log("roshan")
             const data = await queryExec(
                 `
             select 

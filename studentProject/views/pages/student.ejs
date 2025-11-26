@@ -36,15 +36,16 @@
       .detail:hover {
         text-decoration: blue;
       }
-          .limit{
+
+      .limit {
         height: 40px;
       }
-            .dropdown {
-            display: flex
-;
-    flex-direction: row-reverse;
-    justify-content: center;
-    gap: 10px;
+
+      .dropdown {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        gap: 10px;
       }
     </style>
 </head>
@@ -55,6 +56,34 @@
       <a class="btn btn-primary " href="/student/add" role="button">Add</a>
     </div>
     <div class="student-table">
+      <div class="d-flex">
+
+        <!-- Search By Dropdown -->
+        <div class="form-group">
+          <select name="searchby" id="searchby" class="form-control">
+            <option value="">-- Select Option --</option>
+            <option value="first_name">First Name</option>
+            <option value="last_name">Last Name</option>
+            <option value="name">Name</option>
+            <option value="email">Email</option>
+            <option value="phone_number">Phone Number</option>
+            <option value="date_of_birth">Data of Birth</option>
+            <option value="gender">Gender</option>
+            <option value="department">Department</option>
+            <option value="admission_date">Addmission Date</option>
+            <option value="city">City</option>
+            <option value="staff">Staff</option>
+          </select>
+        </div>
+
+        <!-- Search Box -->
+        <div class="ml-2">
+          <form id="searchForm" method="GET" action="/student ">
+            <input type="text" id="searchInput" placeholder="Search student...">
+            <button type="submit" onclick="changeURL(event)">Search</button>
+          </form>
+        </div>
+      </div>
       <table class="table table-striped ">
         <thead>
           <tr scope="row">
@@ -139,13 +168,13 @@
         <ul class="pagination d-flex justify-content-center">
           <li class="<%= currentPage === 1 ? 'page-item disabled': 'page-item'%>"><a class="page-link"
               href="?page=<%= currentPage%>">Previous</a></li>
-          <% for(let i=0;i < pageCount; i++){%>
-            <li class="page-item">
-              <a class="page-link" href="?page=<%= i + 1 %>">
-                <%= i + 1 %>
+          <% for (let i=1; i <=pageCount; i++) { %>
+            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+              <a class="page-link" href="?limit=<%=limitno%>&page=<%= i %>">
+                <%= i %>
               </a>
             </li>
-            <%}%>
+            <% } %>
               <li class="<%= currentPage === 1 ? 'page-item disabled': 'page-item'%>"><a class="page-link"
                   href="?page=<%currentPage + 1%>">Next</a></li>
         </ul>
@@ -196,6 +225,17 @@
           console.error(error)
 
         }
+      }
+      function changeURL(event){
+        event.preventDefault();
+          let search = document.getElementById("searchInput").value
+          let searchby = document.getElementById("searchby").value
+          if(search != "" || searchby != ''){
+           window.location.href=`/student?search=${search}&searchby=${searchby}`
+          }
+          else{
+            window.location.href= 'http://localhost:3000/student'
+          }
       }
     </script>
 </body>

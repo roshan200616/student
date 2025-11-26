@@ -6,6 +6,8 @@ router.get('/', async (req, res) => {
     try {
         let page
         let limit
+        let search
+        let searchby
         if (req.query.limit === undefined) {
             limit = 5
         } else {
@@ -16,6 +18,8 @@ router.get('/', async (req, res) => {
         } else {
             page = req.query.page
         }
+        search = req.query.search || ''
+        searchby = req.query.searchby || 'first_name'
 
         const limitNo = Number(limit)
         const pageNo = Number(page)
@@ -26,11 +30,14 @@ router.get('/', async (req, res) => {
             page: 0,
             totalRecords: 0,
             data: [],
+            search:'',
+            searchby:'s.first_name'
 
         }
-        const result = await queryExec(`select * from students`)
+        if (searchby === 'phone_number'|| searchby === 'gender') {
+            const result = await queryExec(`select * from students where ${searchby} = '${search}'`)
 
-        const data = await queryExec(`
+            const data = await queryExec(`
       SELECT 
         s.student_id,
         s.first_name,
@@ -47,18 +54,54 @@ router.get('/', async (req, res) => {
       FROM students s
       left JOIN department d ON s.department_id = d.department_id
       left JOIN staff st ON s.department_id = st.department_id
+      where s.${searchby} = '${search}'
       limit ${limitNo} offset ${offset}
     `);
-        response.data = data
-        response.limit = limitNo
-        response.page = pageNo
-        response.totalRecords = result.length
-        if (data.length === 0) {
-            res.status(404).send("No data found");
-        } else {
-            res.status(200).send(response);
+            response.data = data
+            response.limit = limitNo
+            response.page = pageNo
+            response.totalRecords = result.length
+            response.search =search
+            response.searchby = searchby
+                res.status(200).send(response);
+            
         }
-    } catch (err) {
+        else {
+            const result = await queryExec(`select * from students where ${searchby} like '%${search}%'`)
+
+            const data = await queryExec(`
+      SELECT 
+        s.student_id,
+        s.first_name,
+        s.last_name,
+        s.email,
+        s.phone_number,
+        s.gender,
+        s.date_of_birth,
+        s.admission_date,
+        s.city,
+        d.department_name,
+        d.department_id,
+        st.staff_name
+      FROM students s
+      left JOIN department d ON s.department_id = d.department_id
+      left JOIN staff st ON s.department_id = st.department_id
+      where s.${searchby} like '%${search}%'
+      limit ${limitNo} offset ${offset}
+    `);
+            response.data = data
+            response.limit = limitNo
+            response.page = pageNo
+            response.totalRecords = result.length
+            response.search = search
+            response.searchby = searchby
+            
+                res.status(200).send(response);
+
+        }
+
+    }
+    catch (err) {
         res.status(500).send('Server error: ' + err);
     }
 });

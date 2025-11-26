@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({extended:true}))
 
 //home route
 app.get('/home', async (req,res) => {
-    res.render('pages/index.ejs')
+    res.render('pages/login.ejs')
 })
 
 // api routes 
