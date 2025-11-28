@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+<style>
+    .student-table {
+        margin: 0px 80px 0px 80px;
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: auto;
+        border: 1px solid #ccc;
+      }
+</style>
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+    <div class="student-table">
+        <table class="table table-striped ">
+            <thead>
+                <tr scope="row">
+                    <th scope="col">Admin Id</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">role </th>
+                    <th scope="col">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%if(data.length===0){ %>
+                    <tr>
+                        <td colspan="13" class="text-center">No records</td>
+                    </tr>
+                    <%}else {%>
+                        <% data.forEach( admin=>{%>
+                            <tr>
+                                <td>
+                                    <%=admin.admin_id%>
+                                </td>
+                                <td>
+                                    <%=admin.username%>
+                                </td>
+                                <td>
+                                    <%=admin.email%>
+                                </td>
+                                <td>
+                                    <%=admin.role%>
+                                </td>
+
+                            </tr>
+                            <%})%>
+                                <%}%>
+            </tbody>
+        </table>
+
+        </div>
+</body>
+
+</html>

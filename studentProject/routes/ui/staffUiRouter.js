@@ -93,7 +93,7 @@ router.get('/edit/:id', async (req, res) => {
     if (response.status === 200 && departmentResponse.status === 200) {
       const data = await response.json();
       const departmentRes = await departmentResponse.json()
-
+       console.log(departmentRes,data)
       res.render('pages/staffAdd.ejs', { data, pageName, departmentRes });
     } else {
       res.render('pages/staffAdd.ejs', { data: {}, pageName, departmentRes: [] });

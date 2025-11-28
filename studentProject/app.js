@@ -4,10 +4,11 @@ import bodyParser from 'body-parser'
 import studentApiRouter from './routes/api/studentRouter.js'
 import staffApiRouter from './routes/api/staffRouter.js'
 import departmentRouter from './routes/api/departmentRouter.js'
-
+import adminRouter from './routes/api/adminRouter.js'
 //ui
 import studentUiRouter from './routes/ui/studentUiRouter.js'
 import staffUiRouter from './routes/ui/staffUiRouter.js'
+import adminUiRouter from './routes/ui/adminUiRouter.js'
 const app = express()
 app.use(bodyParser.json())
 app.set('view engine', 'ejs');
@@ -22,9 +23,11 @@ app.get('/home', async (req,res) => {
 app.use('/api/student/', studentApiRouter)
 app.use('/api/staff/',staffApiRouter)
 app.use('/api/department/',departmentRouter)
+app.use('/api/admin/',adminRouter)
 //ui routes
 app.use('/student/', studentUiRouter)
 app.use('/staff/',staffUiRouter)
+app.use('/admin/',adminUiRouter)
 try{
     app.listen(3000)
     console.log('server runnig http://localhost:3000')

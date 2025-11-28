@@ -51,6 +51,11 @@
 <body class="main">
 
   <%- include('../partials/header') %>
+    <div class="add">
+      <a class="btn btn-primary " href="/staff/add" role="button">Add</a>
+    </div>
+
+
 
     <div class="staff-table">
       <div class="d-flex">
@@ -154,7 +159,8 @@
         <ul class="pagination d-flex justify-content-center">
 
           <li class="<%= currentPage === 1 ? 'page-item disabled' : 'page-item' %>">
-            <a class="page-link" href="?limit=<%=limitno%>&page=<%= currentPage - 1 %>&search=<%=search%>&searchby=<%=searchBy%>">Previous</a>
+            <a class="page-link"
+              href="?limit=<%=limitno%>&page=<%= currentPage - 1 %>&search=<%=search%>&searchby=<%=searchBy%>">Previous</a>
           </li>
 
           <% for (let i=1; i <=pageCount; i++) { %>
@@ -166,7 +172,8 @@
             <% } %>
 
               <li class="<%= currentPage === pageCount ? 'page-item disabled' : 'page-item' %>">
-                <a class="page-link" href="?limit=<%=limitno%>&page=<%= currentPage + 1 %>&search=<%=search%>&searchby=<%=searchBy%>">Next</a>
+                <a class="page-link"
+                  href="?limit=<%=limitno%>&page=<%= currentPage + 1 %>&search=<%=search%>&searchby=<%=searchBy%>">Next</a>
               </li>
 
         </ul>
@@ -214,7 +221,7 @@
 
         let keyword = document.getElementById("searchInput").value
         let searchby = document.getElementById("searchby").value
-        if (keyword === "" || searchby ==="") {
+        if (keyword === "" || searchby === "") {
           window.location.href = "http://localhost:3000/staff";
         }
         else {

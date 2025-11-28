@@ -113,7 +113,8 @@ router.get('/staff_id/:id', async (req, res) => {
         s.position,
         s.gender,
         s.salary,
-        d.department_name
+        d.department_name,
+        s.department_id
       FROM staff s
       JOIN department d ON s.department_id = d.department_id
       WHERE s.staff_id = ?;

@@ -84,13 +84,13 @@
       </div>
 
       <!-- Department -->
-      <div class="col-md-6">
+     <div class="col-md-6">
         <label for="department" class="form-label">Department</label>
         <select class="form-select" id="department" required>
           <option value="">Choose...</option>
           <% for (let i=0; i < departmentRes.length; i++) { %>
-            <option value="<%= departmentRes[i].department_name %>"
-              <%=departmentRes[i].department_id===data.department_id ? 'selected' : '' %>>
+            <option value="<%= departmentRes[i].department_name %>" <%=departmentRes[i].department_id===data.department_id
+              ? 'selected' : '' %>>
               <%= departmentRes[i].department_name %>
             </option>
             <% } %>
