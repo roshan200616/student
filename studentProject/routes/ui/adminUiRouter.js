@@ -1,5 +1,5 @@
 import express from "express";
-import fetch from "node-fetch";
+import fetch, { FetchError } from "node-fetch";
 
 const router = express.Router();
 
@@ -19,5 +19,8 @@ router.get('/', async (req, res) => {
         res.render('pages/adminTable.ejs', { data: [] });
     }
 });
+router.get('/add',(req,res)=>{
+   res.render('pages/adminAdd.ejs')
+})
 
 export default router;
