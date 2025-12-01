@@ -19,8 +19,30 @@ router.get('/', async (req, res) => {
         res.render('pages/adminTable.ejs', { data: [] });
     }
 });
-router.get('/add',(req,res)=>{
-   res.render('pages/adminAdd.ejs')
+router.get('/add', (req, res) => {
+    const pageName= 'add'
+    res.render('pages/adminAdd.ejs',{data:[],pageName})
 })
+router.get('/detail/:id', async (req, res) => {
+    try {
+        const id = req.params.id
+        const pageName = "edit"
+        const response = await fetch(`http://localhost:3000/api/admin/${id}`)
+        if (response.status === 200) {
+            const data = await response.json()
+            res.render('pages/adminAdd.ejs',{data,pageName})
+        }
+        else{
+           const data = await response.json()
+           res.render('pages/adminAdd.ejs',{data:[],pageName})
+           
+        }
 
+
+    }
+    catch (err) {
+        console.log(err)
+    }
+
+})
 export default router;

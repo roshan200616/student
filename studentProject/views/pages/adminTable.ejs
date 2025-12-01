@@ -35,6 +35,8 @@
                         <th scope="col">Username</th>
                         <th scope="col">role </th>
                         <th scope="col">Email</th>
+                        <th scope="col">Action</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -57,6 +59,14 @@
                                     <td>
                                         <%=admin.role%>
                                     </td>
+                                    <td class="action">
+                                        <a href="detail/<%= admin.admin_id %>"
+                                            class="text-reset text-decoration-none"
+                                            style="text-decoration: none !important;">
+                                            ✏️
+                                        </a>
+                                        <button onclick="deleteAdmin(<%=admin.admin_id%>)">🗑️</button>
+                                    </td>
 
                                 </tr>
                                 <%})%>
@@ -65,6 +75,31 @@
             </table>
 
         </div>
+        <script>
+            function deleteAdmin(admin_id) {
+                const requestOptions = {
+                    method: "DELETE",
+                    redirect: "follow"
+                };
+                try {
+                    fetch(`http://localhost:3000/api/admin/${admin_id}`, requestOptions)
+                        .then(async (response) => {
+                            if (response.ok) {
+                                window.location.reload()
+                            }
+                            else {
+                                const error = await response.json()
+                                alter(error.message)
+                            }
+                        })
+
+                }
+                catch(err){
+                     console.log(err)
+                }
+            }
+
+        </script>
 </body>
 
 </html>
